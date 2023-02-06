@@ -1,17 +1,15 @@
+use cosmwasm_schema::cw_serde;
 use cosmwasm_std::Uint128;
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use tefi_oracle::proxy::ProxyQueryMsg;
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[cw_serde]
 pub struct InstantiateMsg {
     pub owner: String,
     pub source_addr: String,
     pub quote_symbol: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum ExecuteMsg {
     UpdateConfig {
         owner: Option<String>,
@@ -19,14 +17,13 @@ pub enum ExecuteMsg {
     },
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum QueryMsg {
     Base(ProxyQueryMsg),
     Config {},
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct ConfigResponse {
     pub owner: String,
     pub source_addr: String,
@@ -35,15 +32,14 @@ pub struct ConfigResponse {
 
 /// Band Protocol interface
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct BandResponse {
     pub rate: Uint128,
     pub last_updated_base: u64,
     pub last_updated_quote: u64,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum BandMsg {
     GetReferenceData {
         base_symbol: String,

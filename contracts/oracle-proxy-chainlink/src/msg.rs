@@ -1,15 +1,13 @@
+use cosmwasm_schema::cw_serde;
 use cosmwasm_std::Uint128;
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use tefi_oracle::proxy::ProxyQueryMsg;
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[cw_serde]
 pub struct InstantiateMsg {
     pub owner: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum ExecuteMsg {
     UpdateOwner {
         owner: String,
@@ -24,28 +22,26 @@ pub enum ExecuteMsg {
     },
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum QueryMsg {
     Base(ProxyQueryMsg),
     Config {},
     Sources { symbol: Option<String> },
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct ConfigResponse {
     pub owner: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct SourcesResponse {
     pub sources: Vec<(String, String)>,
 }
 
 // Chainlink interfaces
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum AggregatorQueryMsg {
     /// Query data for a specific round
     /// Response: [`RoundDataResponse`].
@@ -66,12 +62,12 @@ pub enum AggregatorQueryMsg {
     GetLatestAnswer {},
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct AggregatorQuery {
     pub aggregator_query: AggregatorQueryMsg,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct RoundDataResponse {
     pub round_id: u32,           // uint80
     pub answer: Option<Uint128>, // int256

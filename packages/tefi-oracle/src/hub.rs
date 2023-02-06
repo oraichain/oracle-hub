@@ -1,20 +1,18 @@
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
+use cosmwasm_schema::cw_serde;
 
 use cosmwasm_std::Decimal;
 
 pub const DEFAULT_PRIORITY: u8 = 10;
 pub const MAX_WHITELISTED_PROXIES: u8 = 15;
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct InstantiateMsg {
     pub owner: String,
     pub base_denom: String,
     pub max_proxies_per_symbol: u8,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum HubExecuteMsg {
     /// Owner operation to update the owner parameter
     UpdateOwner { owner: String },
@@ -52,8 +50,7 @@ pub enum HubExecuteMsg {
     },
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum HubQueryMsg {
     /// Queries contract configuration
     Config {},
@@ -96,38 +93,37 @@ pub enum HubQueryMsg {
     CheckSource { proxy_addr: String, symbol: String },
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct ConfigResponse {
     pub owner: String,
     pub base_denom: String,
     pub max_proxies_per_symbol: u8,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct PriceResponse {
     pub rate: Decimal,
     pub last_updated: u64,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum PriceQueryResult {
     Success(PriceResponse),
     Fail,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct PriceListResponse {
     pub price_list: Vec<(u8, ProxyInfoResponse, PriceQueryResult)>, // (priority, proxy_info, result)
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct SourcesResponse {
     pub symbol: String,
     pub proxies: Vec<(u8, ProxyInfoResponse)>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct AllSourcesResponse {
     pub list: Vec<SourcesResponse>,
 }
@@ -141,18 +137,18 @@ impl From<crate::proxy::ProxyPriceResponse> for PriceResponse {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct ProxyWhitelistResponse {
     pub proxies: Vec<ProxyInfoResponse>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct ProxyInfoResponse {
     pub address: String,
     pub provider_name: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct AssetSymbolMapResponse {
     pub map: Vec<(String, String)>, // address, symbol
 }

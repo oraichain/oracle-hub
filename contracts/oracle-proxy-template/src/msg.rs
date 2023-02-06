@@ -1,19 +1,17 @@
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
+use cosmwasm_schema::cw_serde;
 use tefi_oracle::proxy::ProxyQueryMsg;
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[cw_serde]
 pub struct InstantiateMsg {
     pub source_addr: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct ConfigResponse {
     pub source_addr: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum QueryMsg {
     Base(ProxyQueryMsg),
     Config {},

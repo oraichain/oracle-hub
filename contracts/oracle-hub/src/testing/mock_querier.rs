@@ -1,10 +1,9 @@
+use cosmwasm_schema::cw_serde;
 use cosmwasm_std::testing::{MockApi, MockQuerier, MockStorage, MOCK_CONTRACT_ADDR};
 use cosmwasm_std::{
     from_binary, from_slice, to_binary, Coin, ContractResult, Decimal, Empty, OwnedDeps, Querier,
     QuerierResult, QueryRequest, SystemError, SystemResult, WasmQuery,
 };
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use tefi_oracle::proxy::ProxyPriceResponse;
 
@@ -19,6 +18,7 @@ pub fn mock_dependencies(
         api: MockApi::default(),
         storage: MockStorage::default(),
         querier: custom_querier,
+        custom_query_type: std::marker::PhantomData,
     }
 }
 
@@ -67,14 +67,12 @@ impl Querier for WasmMockQuerier {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum MockQueryMsg {
     Base(ProxyMockQueryMsg),
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum ProxyMockQueryMsg {
     Price { symbol: String },
 }

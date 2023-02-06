@@ -1,15 +1,13 @@
+use cosmwasm_schema::cw_serde;
 use cosmwasm_std::Decimal;
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use tefi_oracle::proxy::ProxyQueryMsg;
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[cw_serde]
 pub struct InstantiateMsg {
     pub owner: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum ExecuteMsg {
     UpdateOwner {
         owner: String,
@@ -24,20 +22,19 @@ pub enum ExecuteMsg {
     },
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum QueryMsg {
     Base(ProxyQueryMsg),
     Config {},
     Feeder { symbol: String },
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct ConfigResponse {
     pub owner: String,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct FeederResponse {
     pub symbol: String,
     pub feeder: String,

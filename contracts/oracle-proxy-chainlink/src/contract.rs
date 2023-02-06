@@ -1,9 +1,10 @@
-use cosmwasm_bignumber::{Decimal256, Uint256};
+use std::str::FromStr;
+
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{
-    to_binary, Addr, Binary, Deps, DepsMut, Env, MessageInfo, Order, QueryRequest, Response,
-    StdResult, WasmQuery,
+    to_binary, Addr, Binary, Decimal, Decimal256, Deps, DepsMut, Env, MessageInfo, Order,
+    QueryRequest, Response, StdResult, Uint256, WasmQuery,
 };
 
 use cw2::set_contract_version;
@@ -190,13 +191,14 @@ pub fn query_price(deps: Deps, symbol: String) -> Result<ProxyPriceResponse, Con
     }
 
     let parsed_rate: Decimal256 = Decimal256::from_ratio(
-        Uint256::from(res.answer.unwrap()),
+        Uint256::from(res.answer.unwrap_or_default()),
         Uint256::from(1e8 as u128),
     );
 
     Ok(ProxyPriceResponse {
-        rate: parsed_rate.into(),
-        last_updated: res.updated_at.unwrap(),
+        // re-parse into Decimal
+        rate: Decimal::from_str(&parsed_rate.to_string())?,
+        last_updated: res.updated_at.unwrap_or_default(),
     })
 }
 

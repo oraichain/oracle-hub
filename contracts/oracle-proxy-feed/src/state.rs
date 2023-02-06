@@ -1,5 +1,4 @@
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
+use cosmwasm_schema::cw_serde;
 
 use cosmwasm_std::{Addr, Decimal};
 use cw_storage_plus::{Item, Map};
@@ -11,7 +10,7 @@ pub const CONFIG: Item<Config> = Item::new("config");
 pub const FEEDERS: Map<&[u8], Addr> = Map::new("feeders");
 pub const PRICES: Map<&[u8], PriceInfo> = Map::new("prices");
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+#[cw_serde]
 pub struct Config {
     pub owner: Addr,
 }
@@ -29,7 +28,7 @@ impl Config {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[cw_serde]
 pub struct PriceInfo {
     pub price: Decimal,
     pub last_updated_time: u64,

@@ -1,5 +1,4 @@
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
+use cosmwasm_schema::cw_serde;
 
 use cosmwasm_std::Addr;
 use cw_storage_plus::{Item, Map};
@@ -17,7 +16,7 @@ pub const WHITELIST: Item<ProxyWhitelist> = Item::new("whitelist");
 // map of asset cw20 contract addresses to symbol
 pub const ASSET_SYMBOL_MAP: Map<&[u8], String> = Map::new("asset_symbol_map");
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+#[cw_serde]
 pub struct Config {
     pub owner: Addr,
     // base denom has no utility in the contract, only for information purpose
@@ -41,7 +40,7 @@ impl Config {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+#[cw_serde]
 pub struct ProxyInfo {
     pub address: Addr,
     pub provider_name: String,
@@ -56,7 +55,7 @@ impl ProxyInfo {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+#[cw_serde]
 pub struct ProxyWhitelist {
     pub proxies: Vec<ProxyInfo>,
 }
@@ -98,7 +97,7 @@ impl ProxyWhitelist {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
+#[cw_serde]
 pub struct Sources {
     pub symbol: String,
     pub proxies: Vec<(u8, Addr)>,
