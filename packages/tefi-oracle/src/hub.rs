@@ -1,4 +1,4 @@
-use cosmwasm_schema::cw_serde;
+use cosmwasm_schema::{cw_serde, QueryResponses};
 
 use cosmwasm_std::Decimal;
 
@@ -51,37 +51,48 @@ pub enum HubExecuteMsg {
 }
 
 #[cw_serde]
+#[derive(QueryResponses)]
 pub enum HubQueryMsg {
     /// Queries contract configuration
+    #[returns(ConfigResponse)]
     Config {},
     /// Queries the list of whitelisted proxies
+    #[returns(ProxyWhitelistResponse)]
     ProxyWhitelist {},
     /// Returns the list of all symbols with all the sources
+    #[returns(AllSourcesResponse)]
     AllSources {
         start_after: Option<String>, // symbol for pagination
         limit: Option<u32>,
     },
     /// Queries the information of all registered proxies for the provided asset_token
+    #[returns(SourcesResponse)]
     Sources { asset_token: String },
     /// Queries the information of all registered proxies for the provided symbol
+    #[returns(SourcesResponse)]
     SourcesBySymbol { symbol: String },
     /// Queries the highes priority available price within the timeframe
     /// If timeframe is not provided, it will ignore the price age
+    #[returns(PriceResponse)]
     Price {
         asset_token: String,
         timeframe: Option<u64>,
     },
     /// Queries the highes priority available price within the timeframe
     /// If timeframe is not provided, it will ignore the price age
+    #[returns(PriceResponse)]
     PriceBySymbol {
         symbol: String,
         timeframe: Option<u64>,
     },
     /// Queries all registered proxy prices for the provied asset_token
+    #[returns(PriceListResponse)]
     PriceList { asset_token: String },
     /// Queries all registered proxy prices for the provied symbol
+    #[returns(PriceListResponse)]
     PriceListBySymbol { symbol: String },
     /// Returns the map of `asset_token` to `symbol`
+    #[returns(AssetSymbolMapResponse)]
     AssetSymbolMap {
         start_after: Option<String>, // address for pagination
         limit: Option<u32>,
@@ -90,8 +101,12 @@ pub enum HubQueryMsg {
     /// for the specified `symbol`. The purpose of this query is to have a
     /// way of checking if a price feed is valid and available before registering
     /// Returns the PriceResponse or an error
+    #[returns(PriceResponse)]
     CheckSource { proxy_addr: String, symbol: String },
 }
+
+#[cw_serde]
+pub struct MigrateMsg {}
 
 #[cw_serde]
 pub struct ConfigResponse {

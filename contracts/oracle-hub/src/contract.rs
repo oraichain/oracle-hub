@@ -3,7 +3,7 @@ use cosmwasm_std::entry_point;
 use cosmwasm_std::{to_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
 use cw2::set_contract_version;
 
-use tefi_oracle::hub::{HubExecuteMsg, HubQueryMsg, InstantiateMsg};
+use tefi_oracle::hub::{HubExecuteMsg, HubQueryMsg, InstantiateMsg, MigrateMsg};
 
 use crate::handle::{
     bulk_register_source, insert_asset_symbol_map, register_source, remove_proxy, remove_source,
@@ -111,4 +111,9 @@ pub fn query(deps: Deps, env: Env, msg: HubQueryMsg) -> Result<Binary, ContractE
     };
 
     res.map_err(|err| err.into())
+}
+
+#[cfg_attr(not(feature = "library"), entry_point)]
+pub fn migrate(_deps: DepsMut, _env: Env, _msg: MigrateMsg) -> StdResult<Response> {
+    Ok(Response::default())
 }
