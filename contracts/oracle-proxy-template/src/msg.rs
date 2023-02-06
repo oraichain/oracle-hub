@@ -1,5 +1,5 @@
-use cosmwasm_schema::cw_serde;
-use tefi_oracle::proxy::ProxyQueryMsg;
+use cosmwasm_schema::{cw_serde, QueryResponses};
+use tefi_oracle::proxy::{ProxyPriceResponse, ProxyQueryMsg};
 
 #[cw_serde]
 pub struct InstantiateMsg {
@@ -12,7 +12,10 @@ pub struct ConfigResponse {
 }
 
 #[cw_serde]
+#[derive(QueryResponses)]
 pub enum QueryMsg {
+    #[returns(ProxyPriceResponse)]
     Base(ProxyQueryMsg),
+    #[returns(ConfigResponse)]
     Config {},
 }

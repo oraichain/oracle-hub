@@ -6,7 +6,7 @@ use cosmwasm_std::{
 };
 
 use cw2::set_contract_version;
-use tefi_oracle::proxy::{ProxyPriceResponse, ProxyQueryMsg};
+use tefi_oracle::proxy::ProxyPriceResponse;
 
 use crate::msg::{BandMsg, BandResponse, ConfigResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
 use crate::state::{Config, CONFIG};
@@ -54,9 +54,7 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> Result<Binary, ContractErr
     let res = match msg {
         QueryMsg::Config {} => to_binary(&query_config(deps)?),
         // Implementation of the queries required by proxy contract standard
-        QueryMsg::Base(proxy_msg) => match proxy_msg {
-            ProxyQueryMsg::Price { symbol } => to_binary(&query_price(deps, symbol)?),
-        },
+        QueryMsg::Base(proxy_msg) => to_binary(&query_price(deps, proxy_msg.symbol)?),
     };
 
     res.map_err(|err| err.into())

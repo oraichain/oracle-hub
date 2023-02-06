@@ -15,7 +15,7 @@ pub fn query_proxy_symbol_price(
 ) -> StdResult<ProxyPriceResponse> {
     let res: ProxyPriceResponse = querier.query(&QueryRequest::Wasm(WasmQuery::Smart {
         contract_addr: String::from(proxy_addr),
-        msg: to_binary(&ProxyBaseQuery::Base(ProxyQueryMsg::Price { symbol }))?,
+        msg: to_binary(&ProxyBaseQuery::Base(ProxyQueryMsg { symbol }))?,
     }))?;
 
     Ok(res)

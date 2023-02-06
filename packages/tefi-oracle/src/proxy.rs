@@ -2,8 +2,8 @@ use cosmwasm_schema::cw_serde;
 use cosmwasm_std::Decimal;
 
 #[cw_serde]
-pub enum ProxyQueryMsg {
-    Price { symbol: String },
+pub struct ProxyQueryMsg {
+    pub symbol: String,
 }
 
 #[cw_serde]
