@@ -73,8 +73,8 @@ pub enum MockQueryMsg {
 }
 
 #[cw_serde]
-pub enum ProxyMockQueryMsg {
-    Price { symbol: String },
+pub struct ProxyMockQueryMsg {
+    pub symbol: String,
 }
 
 impl WasmMockQuerier {
@@ -84,7 +84,7 @@ impl WasmMockQuerier {
                 contract_addr: _,
                 msg,
             }) => match from_binary(msg).unwrap() {
-                MockQueryMsg::Base(ProxyMockQueryMsg::Price { symbol }) => {
+                MockQueryMsg::Base(ProxyMockQueryMsg { symbol }) => {
                     match self.oracle_proxy_price_querier.oracle_price.get(&symbol) {
                         Some(price) => {
                             let res = ProxyPriceResponse {
