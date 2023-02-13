@@ -2,7 +2,7 @@
 name = "oracle-proxy-band"
 version = "0.2.0"
 authors = ["Terraform Labs, PTE."]
-edition = "2018"
+edition = "2021"
 description = "Oracle Proxy for Band Protocol"
 
 [lib]
